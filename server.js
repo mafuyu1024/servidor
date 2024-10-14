@@ -1,29 +1,23 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
-// Middleware para parsear el cuerpo de las solicitudes
-app.use(express.json());
+// Middleware para manejar el cuerpo de la solicitud
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// Ruta para recibir datos del ESP8266
 app.post('/gps', (req, res) => {
-    const { latitude, longitude } = req.body;
+    const latitude = req.body.latitude;
+    const longitude = req.body.longitude;
 
-    if (latitude && longitude) {
-        console.log(`Datos recibidos: Latitud ${latitude}, Longitud ${longitude}`);
-        res.status(200).send('Datos recibidos correctamente');
-    } else {
-        res.status(400).send('Faltan datos');
-    }
+    // Aquí puedes almacenar los datos en una base de datos o procesarlos
+    console.log(`Latitud: ${latitude}, Longitud: ${longitude}`);
+
+    // Responder al cliente
+    res.send('Datos recibidos');
 });
 
-// Ruta raíz
-app.get('/', (req, res) => {
-    res.send('¡Servidor funcionando!');
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
-
-// Iniciar el servidor
-app.listen(port, () => {
-    console.log(`Servidor corriendo en http://localhost:${port}`);
-});
-
