@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware para manejar el cuerpo de la solicitud
 app.use(bodyParser.urlencoded({ extended: true }));
