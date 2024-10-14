@@ -1,23 +1,24 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
-// Middleware para manejar el cuerpo de la solicitud
-app.use(bodyParser.urlencoded({ extended: true }));
+// Middleware para poder leer datos de la petición
+app.use(express.json());
 
-app.post('/gps', (req, res) => {
-    const latitude = req.body.latitude;
-    const longitude = req.body.longitude;
+app.get('/gps', (req, res) => {
+    const latitude = req.query.latitude;
+    const longitude = req.query.longitude;
 
-    // Aquí puedes almacenar los datos en una base de datos o procesarlos
-    console.log(`Latitud: ${latitude}, Longitud: ${longitude}`);
-
-    // Responder al cliente
-    res.send('Datos recibidos');
+    if (latitude && longitude) {
+        console.log(`Recibidos: Latitud ${latitude}, Longitud ${longitude}`);
+        res.status(200).send(`Datos recibidos: Latitud ${latitude}, Longitud ${longitude}`);
+    } else {
+        res.status(400).send('Datos de GPS no proporcionados');
+    }
 });
 
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+
+app.listen(port, () => {
+    console.log(`Servidor escuchando en http://localhost:${port}`);
 });
+
