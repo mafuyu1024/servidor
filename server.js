@@ -1,26 +1,21 @@
-// server.js
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000; // Usa el puerto proporcionado por Render
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(cors()); // Habilitar CORS si es necesario
+app.use(bodyParser.json()); // Parsear JSON
 
-// Ruta para recibir datos GPS
+// Ruta para recibir datos
 app.post('/gps', (req, res) => {
-    const { latitude, longitude } = req.query; // Obtener latitud y longitud de la consulta
-    console.log(`Latitud: ${latitude}, Longitud: ${longitude}`); // Imprimir en la consola
-    
-    // Aquí puedes agregar lógica para almacenar o procesar los datos
-    res.status(200).send(`Datos recibidos: Latitud ${latitude}, Longitud ${longitude}`);
+    const { latitude, longitude } = req.body; // Obtener datos del cuerpo
+    console.log(`Latitud: ${latitude}, Longitud: ${longitude}`);
+    res.status(200).send('Datos recibidos correctamente');
 });
 
 // Iniciar el servidor
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+app.listen(port, () => {
+    console.log(`Servidor corriendo en https://servidor-vp58.onrender.com:${port}`);
 });
