@@ -1,22 +1,26 @@
+// server.js
 const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Middleware para analizar parámetros de consulta
-app.use(express.json());
+// Middleware
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-app.get('/gps', (req, res) => {
-    const latitude = req.query.latitude;
-    const longitude = req.query.longitude;
+// Ruta para recibir datos GPS
+app.post('/gps', (req, res) => {
+    const { latitude, longitude } = req.query; // Obtener latitud y longitud de la consulta
+    console.log(`Latitud: ${latitude}, Longitud: ${longitude}`); // Imprimir en la consola
     
-    if (latitude && longitude) {
-        // Procesa los datos y envía una respuesta
-        res.status(200).send(`Latitud: ${latitude}, Longitud: ${longitude}`);
-    } else {
-        res.status(400).send('Faltan parámetros');
-    }
+    // Aquí puedes agregar lógica para almacenar o procesar los datos
+    res.status(200).send(`Datos recibidos: Latitud ${latitude}, Longitud ${longitude}`);
 });
 
-app.listen(port, () => {
-    console.log(`Servidor escuchando en http://localhost:${port}`);
+// Iniciar el servidor
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
